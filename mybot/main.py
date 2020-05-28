@@ -4,39 +4,23 @@ import vk_api
 from datetime import datetime
 import random
 import time
-import get_pictures
 
-token = "2898fea46066070eacdf907c2aee08790049809f17fa45bd6db48d9f5b1aa08c35154915c9f951bc4d7c3"
+token = "8907473a9dc5cd1491a312f71571f252c452099cfeea74950c091e92ce6a757dac12a3d1e9a178ff7e5c6"
 vk_session = vk_api.VkApi(token=token)
 session_api = vk_session.get_api()
 longpoll = VkLongPoll(vk_session)
 
-session_api = vk_session.get_api()
-
-longpoll = VkLongPoll(vk_session)
-
-
 def create_keyboard(response):
     keyboard = VkKeyboard(one_time=False)
 
-    if response == 'тест':
+    if response == 'привет':
 
-        keyboard.add_button('Белая кнопка', color=VkKeyboardColor.DEFAULT)
-        keyboard.add_button('Зелёная кнопка', color=VkKeyboardColor.POSITIVE)
+        keyboard.add_button('Викторина 1', color=VkKeyboardColor.POSITIVE)
+        keyboard.add_button('Викторина 2', color=VkKeyboardColor.POSITIVE)
 
         keyboard.add_line()  # Переход на вторую строку
-        keyboard.add_button('Красная кнопка', color=VkKeyboardColor.NEGATIVE)
-
-        keyboard.add_line()
-        keyboard.add_button('Синяя кнопка', color=VkKeyboardColor.PRIMARY)
-        keyboard.add_button('Привет', color=VkKeyboardColor.PRIMARY)
-
-
-    elif response == 'привет':
-        keyboard.add_button('Тест', color=VkKeyboardColor.POSITIVE)
-
-    elif response == 'котики':
-        keyboard.add_button('Котики!', color=VkKeyboardColor.POSITIVE)
+        keyboard.add_button('Ссылка на группу', color=VkKeyboardColor.PRIMARY)
+        keyboard.add_button('Факты о добровольчестве', color=VkKeyboardColor.PRIMARY)
 
     elif response == 'закрыть':
         print('закрываем клаву')
@@ -58,24 +42,13 @@ for event in longpoll.listen():
         keyboard = create_keyboard(response)
 
         if event.from_user and not event.from_me:
-            if response == "котики":
-                attachment = get_pictures.get(vk_session, -130670107, session_api)
-                send_message(vk_session, 'user_id', event.user_id, message='Держи котиков!', attachment=attachment, keyboard=keyboard)
-            elif response == "привет":
-                send_message(vk_session, 'user_id', event.user_id, message='Нажми на кнопку, чтобы получить список команд',keyboard=keyboard)
-            elif response == "тест":
-                send_message(vk_session, 'user_id', event.user_id, message= 'Тестовые команды',keyboard=keyboard)
+
+            if response == "привет":
+                send_message(vk_session, 'user_id', event.user_id, message='Выберите интересующее вас действие',keyboard=keyboard)
+            #elif response == "начать":
+            #    send_message(vk_session, 'user_id', event.user_id, message= 'Тестовые команды',keyboard=keyboard)
             elif response=='команды':
                 send_message(vk_session, 'user_id', event.user_id, message='Список команд бота: \n \n 1)Команда1 \n 2)Команда2')
 
             elif response=='закрыть':
                 send_message(vk_session, 'user_id', event.user_id, message='Закрыть',keyboard=keyboard)
-
-
-
-        elif event.from_chat :
-            if response == "котики":
-                attachment = get_pictures.get(vk_session, -130670107, session_api)
-                print(attachment)
-                send_message(vk_session, 'chat_id', event.chat_id, message='Держите котиков!', attachment= attachment)
-        print('-' * 30)

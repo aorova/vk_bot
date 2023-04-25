@@ -6,7 +6,7 @@ import turtle
 
 pen = turtle.Turtle()
 pen.speed(5000)
-pen.color("blue")
+pen.color("red")
 a = 20
 
 
